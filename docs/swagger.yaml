@@ -1,0 +1,370 @@
+basePath: /api/v1
+definitions:
+  domain.Todo:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: string
+      isCompleted:
+        type: boolean
+      name:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/domain.User'
+      userID:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      todos:
+        items:
+          $ref: '#/definitions/domain.Todo'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  dto.LoginRequestDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.RegisterRequestDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.TodoRequestDto:
+    properties:
+      isCompleted:
+        type: boolean
+      name:
+        type: string
+    type: object
+  dto.UserRequestDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+info:
+  contact: {}
+  title: Todo App
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: Login
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+      summary: Login a user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a user
+      parameters:
+      - description: Login
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.User'
+      summary: Register a user
+      tags:
+      - Auth
+  /init:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+      summary: Init data
+      tags:
+      - Init
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Todo users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Todo'
+            type: array
+      security:
+      - Bearer: []
+      summary: Todo users
+      tags:
+      - Todo
+    post:
+      consumes:
+      - application/json
+      description: Create a new todo
+      parameters:
+      - description: New Todo
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TodoRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Todo'
+      security:
+      - Bearer: []
+      summary: Create a todo
+      tags:
+      - Todo
+    put:
+      consumes:
+      - application/json
+      description: Update a new todo
+      parameters:
+      - description: New Todo
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TodoRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Todo'
+      security:
+      - Bearer: []
+      summary: Update a todo
+      tags:
+      - Todo
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete todo by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete todo
+      tags:
+      - Todo
+    get:
+      consumes:
+      - application/json
+      description: get todo by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Todo'
+      security:
+      - Bearer: []
+      summary: Get todo
+      tags:
+      - Todo
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: List users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.User'
+            type: array
+      security:
+      - Bearer: []
+      summary: List users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: New User
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.User'
+      security:
+      - Bearer: []
+      summary: Create a user
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update a new user
+      parameters:
+      - description: New User
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.User'
+      security:
+      - Bearer: []
+      summary: Update a user
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: get user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.User'
+      security:
+      - Bearer: []
+      summary: Get user
+      tags:
+      - User
+schemes:
+- http
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
