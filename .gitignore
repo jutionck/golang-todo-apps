@@ -2,3 +2,6 @@
 /.env
 logger.log
 app
+/todo_app_darwin_amd64
+/todo_app_linux_amd64
+/todo_app_windows_amd64
