@@ -30,7 +30,7 @@ func (u *userUseCase) RegisterNew(payload *domain.User) error {
 		return err
 	}
 	exists, _ := u.repo.GetEmail(payload.Email)
-	if exists.Email == payload.Email {
+	if exists != nil {
 		return fmt.Errorf("oops, data with email %s have been created", payload.Email)
 	}
 	password, err := commons.HashPassword(payload.Password)
@@ -79,15 +79,25 @@ func (u *userUseCase) UpdateData(payload *domain.User) error {
 	if err := payload.IsValidField(); err != nil {
 		return err
 	}
-	exists, _ := u.repo.GetEmail(payload.Email)
-	if exists.Email == payload.Email && exists.ID != payload.ID {
-		return fmt.Errorf("oops, data with email %s have been created", payload.Email)
+
+	existingUser, err := u.repo.GetEmail(payload.Email)
+	if err != nil {
+		return err
+	}
+	if existingUser.Email == payload.Email && existingUser.ID != payload.ID {
+		return fmt.Errorf("oops, data with email %s already exists", payload.Email)
 	}
 
 	if payload.Password != "" {
 		password, err := commons.HashPassword(payload.Password)
 		exception.CheckError(err)
 		payload.Password = password
+		if existingUser.Role == config.USER {
+			payload.Role = config.USER
+		} else {
+			payload.Role = config.ADMIN
+		}
+		payload.Role = config.USER
 	}
 
 	return u.repo.Save(payload)

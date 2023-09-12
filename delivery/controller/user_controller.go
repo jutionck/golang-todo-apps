@@ -108,6 +108,9 @@ func (u *UserController) updateHandler(c *gin.Context) {
 		return
 	}
 	userData := &domain.User{
+		BaseModel: domain.BaseModel{
+			ID: payload.Id,
+		},
 		Email:    payload.Email,
 		Password: payload.Password,
 	}
@@ -116,7 +119,7 @@ func (u *UserController) updateHandler(c *gin.Context) {
 		return
 	}
 
-	commons.SendSingleResponse(c, payload, "OK")
+	commons.SendSingleResponse(c, userData, "OK")
 }
 
 // DeleteUser godoc

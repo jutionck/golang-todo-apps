@@ -30,7 +30,11 @@ func (u *userRepository) Save(payload *domain.User) error {
 func (u *userRepository) List(requestQueryParams model.RequestQueryParams) ([]domain.User, model.Paging, error) {
 	paginationQuery, orderQuery := commons.PagingValidate(requestQueryParams)
 	var users []domain.User
-	result := u.db.Order(orderQuery).Limit(paginationQuery.Take).Offset(paginationQuery.Skip).Preload(clause.Associations).Find(&users).Error
+	result := u.db.Order(orderQuery).
+		Limit(paginationQuery.Take).
+		Offset(paginationQuery.Skip).
+		Select("id,email,role,created_at,updated_at").
+		Find(&users).Error
 	if result != nil {
 		return nil, model.Paging{}, result
 	}

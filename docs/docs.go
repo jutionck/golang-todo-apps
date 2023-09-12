@@ -562,6 +562,9 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 }
