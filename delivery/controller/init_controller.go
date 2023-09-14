@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jutionck/golang-todo-apps/config"
 	"github.com/jutionck/golang-todo-apps/usecase"
 	"github.com/jutionck/golang-todo-apps/utils/commons"
 	"net/http"
@@ -30,7 +31,7 @@ func (i *InitController) initializeHandler(c *gin.Context) {
 }
 
 func (i *InitController) Route() {
-	i.router.GET("/init", i.initializeHandler)
+	i.router.GET(config.GetInit, i.initializeHandler)
 
 }
 

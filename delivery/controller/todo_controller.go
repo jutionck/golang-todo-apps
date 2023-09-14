@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jutionck/golang-todo-apps/config"
 	"github.com/jutionck/golang-todo-apps/delivery/middleware"
 	"github.com/jutionck/golang-todo-apps/domain"
 	"github.com/jutionck/golang-todo-apps/domain/dto"
@@ -157,11 +158,11 @@ func (u *TodoController) deleteHandler(c *gin.Context) {
 }
 
 func (u *TodoController) Route() {
-	u.r.POST("/todos", u.authMiddleware.RequireToken("admin", "user"), u.createHandler)
-	u.r.GET("/todos", u.authMiddleware.RequireToken("admin", "user"), u.listHandler)
-	u.r.GET("/todos/:id", u.authMiddleware.RequireToken("admin", "user"), u.getHandler)
-	u.r.PUT("/todos", u.authMiddleware.RequireToken("admin", "user"), u.updateHandler)
-	u.r.DELETE("/todos/:id", u.authMiddleware.RequireToken("admin", "user"), u.deleteHandler)
+	u.r.POST(config.PostTodo, u.authMiddleware.RequireToken(config.ADMIN, config.USER), u.createHandler)
+	u.r.GET(config.GetTodoList, u.authMiddleware.RequireToken(config.ADMIN, config.USER), u.listHandler)
+	u.r.GET(config.GetTodo, u.authMiddleware.RequireToken(config.ADMIN, config.USER), u.getHandler)
+	u.r.PUT(config.PutTodo, u.authMiddleware.RequireToken(config.ADMIN, config.USER), u.updateHandler)
+	u.r.DELETE(config.DeleteTodo, u.authMiddleware.RequireToken(config.ADMIN, config.USER), u.deleteHandler)
 }
 
 func NewTodoController(uc usecase.TodoUseCase, r *gin.RouterGroup, am middleware.AuthMiddleware) *TodoController {

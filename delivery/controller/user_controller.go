@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jutionck/golang-todo-apps/config"
 	"github.com/jutionck/golang-todo-apps/delivery/middleware"
 	"github.com/jutionck/golang-todo-apps/domain"
 	"github.com/jutionck/golang-todo-apps/domain/dto"
@@ -143,11 +144,11 @@ func (u *UserController) deleteHandler(c *gin.Context) {
 }
 
 func (u *UserController) Route() {
-	u.r.POST("/users", u.authMiddleware.RequireToken("admin"), u.createHandler)
-	u.r.GET("/users", u.authMiddleware.RequireToken("admin"), u.listHandler)
-	u.r.GET("/users/:id", u.authMiddleware.RequireToken("admin"), u.getHandler)
-	u.r.PUT("/users", u.authMiddleware.RequireToken("admin"), u.updateHandler)
-	u.r.DELETE("/users/:id", u.authMiddleware.RequireToken("admin"), u.deleteHandler)
+	u.r.POST(config.PostUser, u.authMiddleware.RequireToken(config.ADMIN), u.createHandler)
+	u.r.GET(config.GetUserList, u.authMiddleware.RequireToken(config.ADMIN), u.listHandler)
+	u.r.GET(config.GetUser, u.authMiddleware.RequireToken(config.ADMIN), u.getHandler)
+	u.r.PUT(config.PutUser, u.authMiddleware.RequireToken(config.ADMIN), u.updateHandler)
+	u.r.DELETE(config.DeleteUser, u.authMiddleware.RequireToken(config.ADMIN), u.deleteHandler)
 }
 
 func NewUserController(uc usecase.UserUseCase, r *gin.RouterGroup, am middleware.AuthMiddleware) *UserController {

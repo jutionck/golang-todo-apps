@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jutionck/golang-todo-apps/config"
 	"github.com/jutionck/golang-todo-apps/domain"
 	"github.com/jutionck/golang-todo-apps/domain/dto"
 	"github.com/jutionck/golang-todo-apps/usecase"
@@ -65,8 +66,8 @@ func (a *AuthController) loginHandler(c *gin.Context) {
 }
 
 func (a *AuthController) Route() {
-	a.router.POST("/auth/login", a.loginHandler)
-	a.router.POST("/auth/register", a.registerHandler)
+	a.router.POST(config.PostLogin, a.loginHandler)
+	a.router.POST(config.PostRegister, a.registerHandler)
 }
 
 func NewAuthController(r *gin.RouterGroup, uc usecase.AuthenticationUseCase) *AuthController {
