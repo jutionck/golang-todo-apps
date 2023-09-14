@@ -5,9 +5,9 @@ import validation "github.com/go-ozzo/ozzo-validation"
 type User struct {
 	BaseModel
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
 	Role     string `json:"role"`
-	Todos    []Todo `json:"todos"`
+	Todos    []Todo `json:"todos,omitempty"`
 }
 
 func (u User) IsValidField() error {

@@ -32,12 +32,22 @@ func (t *todoRepository) List(requestQueryParams model.RequestQueryParams, exclu
 	var todos []domain.Todo
 	var result error
 	if excludeUserID != "" {
-		result = t.db.Preload(clause.Associations).Order(orderQuery).Limit(paginationQuery.Take).Offset(paginationQuery.Skip).Where(
-			"user_id=?",
-			excludeUserID,
-		).Find(&todos).Error
+		result = t.db.
+			Preload(clause.Associations).
+			Order(orderQuery).
+			Limit(paginationQuery.Take).
+			Offset(paginationQuery.Skip).
+			Where(
+				"user_id=?",
+				excludeUserID,
+			).Find(&todos).Error
 	} else {
-		result = t.db.Preload(clause.Associations).Order(orderQuery).Limit(paginationQuery.Take).Offset(paginationQuery.Skip).Find(&todos).Error
+		result = t.db.
+			Preload(clause.Associations).
+			Order(orderQuery).
+			Limit(paginationQuery.Take).
+			Offset(paginationQuery.Skip).
+			Find(&todos).Error
 	}
 	if result != nil {
 		return nil, model.Paging{}, result
@@ -56,7 +66,10 @@ func (t *todoRepository) List(requestQueryParams model.RequestQueryParams, exclu
 
 func (t *todoRepository) Get(id string) (*domain.Todo, error) {
 	var todo domain.Todo
-	result := t.db.Where("id=?", id).Preload("User").First(&todo).Error
+	result := t.db.
+		Where("id=?", id).
+		Preload("User").
+		First(&todo).Error
 	if result != nil {
 		return nil, result
 	}

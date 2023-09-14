@@ -7,7 +7,6 @@ import (
 	"github.com/jutionck/golang-todo-apps/utils/exception"
 	"github.com/jutionck/golang-todo-apps/utils/model"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type UserRepository interface {
@@ -30,7 +29,8 @@ func (u *userRepository) Save(payload *domain.User) error {
 func (u *userRepository) List(requestQueryParams model.RequestQueryParams) ([]domain.User, model.Paging, error) {
 	paginationQuery, orderQuery := commons.PagingValidate(requestQueryParams)
 	var users []domain.User
-	result := u.db.Order(orderQuery).
+	result := u.db.
+		Order(orderQuery).
 		Limit(paginationQuery.Take).
 		Offset(paginationQuery.Skip).
 		Select("id,email,role,created_at,updated_at").
@@ -48,7 +48,10 @@ func (u *userRepository) List(requestQueryParams model.RequestQueryParams) ([]do
 
 func (u *userRepository) Get(id string) (*domain.User, error) {
 	var user domain.User
-	result := u.db.Where("id=?", id).Preload(clause.Associations).First(&user).Error
+	result := u.db.
+		Preload("Todos.User").
+		Select("id,email,role,created_at,updated_at").
+		First(&user, "id=?", id).Error
 	if result != nil {
 		return nil, result
 	}

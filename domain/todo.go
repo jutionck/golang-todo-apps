@@ -6,8 +6,8 @@ type Todo struct {
 	BaseModel
 	Name        string `json:"name"`
 	IsCompleted bool   `json:"isCompleted"`
-	UserID      string
-	User        User `gorm:"foreignKey:UserID"`
+	UserID      string `json:"userId"`
+	User        User   `gorm:"foreignKey:UserID" json:"user"`
 }
 
 func (u Todo) IsValidField() error {
