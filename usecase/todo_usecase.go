@@ -23,7 +23,7 @@ func (t *todoUseCase) RegisterNew(payload *domain.Todo) error {
 	if err := payload.IsValidField(); err != nil {
 		return err
 	}
-	return t.repo.Save(payload)
+	return t.repo.Create(payload)
 }
 
 func (t *todoUseCase) FindAll(requestQueryParams model.RequestQueryParams, excludeUserID string) ([]domain.Todo, model.Paging, error) {
@@ -42,10 +42,10 @@ func (t *todoUseCase) FindById(id string) (*domain.Todo, error) {
 }
 
 func (t *todoUseCase) UpdateData(payload *domain.Todo) error {
-	if err := payload.IsValidField(); err != nil {
-		return err
-	}
-	return t.repo.Save(payload)
+	//if err := payload.IsValidField(); err != nil {
+	//	return err
+	//}
+	return t.repo.Update(payload)
 }
 
 func (t *todoUseCase) DeleteData(id string) error {

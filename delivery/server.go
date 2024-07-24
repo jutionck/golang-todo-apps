@@ -2,6 +2,8 @@ package delivery
 
 import (
 	"fmt"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jutionck/golang-todo-apps/config"
 	"github.com/jutionck/golang-todo-apps/delivery/controller"
@@ -40,6 +42,12 @@ func (s *Server) swagDocs() {
 }
 
 func (s *Server) Run() {
+	s.engine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
 	s.engine.Use(middleware.NewLogMiddleware(s.loggerService).Logger())
 	s.setupControllers()
 	s.swagDocs()

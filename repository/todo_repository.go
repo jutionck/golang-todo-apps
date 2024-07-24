@@ -9,7 +9,8 @@ import (
 )
 
 type TodoRepository interface {
-	Save(payload *domain.Todo) error
+	Create(payload *domain.Todo) error
+	Update(payload *domain.Todo) error
 	List(requestQueryParams model.RequestQueryParams, excludeUserID string) ([]domain.Todo, model.Paging, error)
 	Get(id string) (*domain.Todo, error)
 	Delete(id string) error
@@ -19,8 +20,12 @@ type todoRepository struct {
 	db *gorm.DB
 }
 
-func (t *todoRepository) Save(payload *domain.Todo) error {
-	return t.db.Save(payload).Error
+func (t *todoRepository) Create(payload *domain.Todo) error {
+	return t.db.Create(payload).Error
+}
+
+func (t *todoRepository) Update(payload *domain.Todo) error {
+	return t.db.Updates(payload).Error
 }
 
 func (t *todoRepository) List(requestQueryParams model.RequestQueryParams, excludeUserID string) (

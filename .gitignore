@@ -1,5 +1,6 @@
 /.idea/
 /.env
+.bin
 logger.log
 app
 /todo_app_darwin_amd64

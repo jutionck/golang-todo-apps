@@ -46,7 +46,7 @@ func (u *TodoController) createHandler(c *gin.Context) {
 		return
 	}
 
-	commons.SendCreatedResponse(c, payload, "OK")
+	commons.SendCreatedResponse(c, todoData, "OK")
 }
 
 // ListTodo godoc
@@ -126,6 +126,7 @@ func (u *TodoController) updateHandler(c *gin.Context) {
 	}
 
 	todoData := &domain.Todo{
+		BaseModel:   domain.BaseModel{ID: payload.Id},
 		IsCompleted: payload.IsCompleted,
 		Name:        payload.Name,
 	}
